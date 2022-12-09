@@ -1,0 +1,40 @@
+{
+  "name": "tg_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.23.0",
+    "date-fns": "^2.28.0",
+    "dotenv-flow": "^3.2.0",
+    "jimp": "^0.16.1",
+    "node-telegram-bot-api": "^0.54.0"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others \"npm run watch-wp\" \"npm run watch-changes\"",
+    "start": "node dist/bundle.js",
+    "build": "webpack --mode=production",
+    "watch-wp": "webpack --watch --mode=development",
+    "watch-changes": "nodemon dist/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etonee123x/tg_bot.git"
+  },
+  "author": "etone123x",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/etonee123x/tg_bot/issues"
+  },
+  "homepage": "https://github.com/etonee123x/tg_bot#readme",
+  "devDependencies": {
+    "@types/dotenv-flow": "^3.2.0",
+    "@types/jimp": "^0.2.28",
+    "@types/node": "^18.0.3",
+    "@types/node-telegram-bot-api": "^0.57.1",
+    "dotenv-webpack": "^8.0.0",
+    "ts-loader": "^9.3.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
