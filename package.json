@@ -1,6 +1,6 @@
 {
   "name": "tg-bot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -11,9 +11,9 @@
     "node-telegram-bot-api": "^0.60.0"
   },
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run dev:watch-wp\" \"npm run dev:watch-changes\"",
+    "dev": "webpack --mode=development && concurrently --kill-others \"npm:dev:watch-changes\" \"npm:dev:watch-wp\"",
     "dev:watch-wp": "webpack --watch --mode=development",
-    "dev:watch-changes": "nodemon dist/bundle.js",
+    "dev:watch-changes": "nodemon --watch dist/bundle.js dist/bundle.js",
     "build": "webpack --mode=production",
     "start": "node dist/bundle.js"
   },
@@ -26,11 +26,13 @@
   "devDependencies": {
     "@types/dotenv-flow": "^3.2.0",
     "@types/jimp": "^0.2.28",
-    "@types/node": "^18.11.12",
+    "@types/node": "^18.11.15",
     "@types/node-telegram-bot-api": "^0.57.6",
+    "concurrently": "^7.6.0",
     "dotenv-webpack": "^8.0.1",
+    "nodemon": "^2.0.20",
     "ts-loader": "^9.4.2",
     "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^5.0.1"
   }
 }
