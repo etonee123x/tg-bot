@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
 
 export default class Auth {
-    private readonly jwt: string;
-  constructor(){
-    const SECRET_KEY = process.env.SECRET_KEY
+  private readonly jwt: string;
 
-    this.jwt=jwt.sign({role: 'Admin'}, String(SECRET_KEY), {expiresIn:'1h'});
+  constructor(){
+    this.jwt = jwt.sign({ role: 'Admin' }, String(process.env.SECRET_KEY), { expiresIn: '1h' });
   }
-    public getResult() {
-        return this.jwt
-    }
+
+  public getResult() {
+    return this.jwt;
+  }
 }
