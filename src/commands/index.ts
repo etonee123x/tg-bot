@@ -15,7 +15,7 @@ import Parser from '@commands/Parser';
 import Auth from '@commands/Auth';
 
 import type { Message } from 'node-telegram-bot-api';
-import generalMessage from './Help/generalMessage';
+import generalMessage from '@/commands/Help/generalMessage';
 
 const apiUrl = String(process.env.API_URL);
 
