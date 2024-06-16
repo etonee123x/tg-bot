@@ -21,6 +21,7 @@ export enum COMMAND_TITLE {
   FUNNY_ANIMALS = 'funny_animals',
   HELP = 'help',
   PARSE = 'parse',
+  AUTH = 'auth',
 }
 
 export const ERRORS_MESSAGES = {

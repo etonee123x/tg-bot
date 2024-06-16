@@ -1,5 +1,3 @@
-import 'dotenv-flow/config.js';
-
 import { Buffer } from 'buffer';
 
 import { sendMessage } from '@/common';
@@ -14,8 +12,10 @@ import { Cypher, Decypher } from '@commands/Crypting';
 import Help from '@commands/Help';
 import KnownError from '@/helpers/KnownError';
 import Parser from '@commands/Parser';
+import Auth from '@commands/Auth';
 
 import type { Message } from 'node-telegram-bot-api';
+import generalMessage from './Help/generalMessage';
 
 const apiUrl = String(process.env.API_URL);
 
@@ -126,6 +126,12 @@ const commands: Commands = {
       { reply_to_message_id: msg.message_id },
       { filename: filename }
     );
+  },
+
+  async [COMMAND_TITLE.AUTH](msg) {
+    msg.chat.id === Number(process.env.ADMIN_CHAT_ID)
+      ? await sendMessage(msg, new Auth().getResult())
+      : await sendMessage(msg, generalMessage);
   }
 };
 

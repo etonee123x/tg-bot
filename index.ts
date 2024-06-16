@@ -1,4 +1,4 @@
-import 'dotenv-flow/config.js';
+import 'dotenv/config';
 
 import botInstance from '@/bot';
 import commandsHandler from '@/commands-handler';

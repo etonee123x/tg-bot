@@ -61,7 +61,7 @@ export default class Help {
   
   public getResult() {
     const addSpecialDescription = (commandTitle: string) => {
-      const theCommand = commands.commands[commandTitle.toUpperCase() as COMMAND_TITLE];
+      const theCommand = commands.commands[commandTitle as COMMAND_TITLE];
       if (!theCommand) {
         throw new KnownError(_ERRORS_MESSAGES.commandNotFound(commandTitle));
       }

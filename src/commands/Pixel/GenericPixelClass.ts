@@ -5,8 +5,6 @@ import type { CommandParams } from '@/types';
 import KnownError from '@/helpers/KnownError';
 import { get } from '@/http';
 
-import 'dotenv-flow/config.js';
-
 interface RGBAColor {
   r: number;
   g: number;

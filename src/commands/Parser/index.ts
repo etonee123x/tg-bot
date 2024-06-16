@@ -1,5 +1,3 @@
-import 'dotenv-flow/config.js';
-
 import { Buffer } from 'buffer';
 import { post, get } from '@/http';
 
