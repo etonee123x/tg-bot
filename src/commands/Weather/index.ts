@@ -1,5 +1,3 @@
-import 'dotenv-flow/config.js';
-
 import { fromUnixTime, format } from 'date-fns';
 import GenericCommand from '@commands/GenericCommand';
 import KnownError from '@/helpers/KnownError';

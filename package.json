@@ -6,8 +6,9 @@
   "dependencies": {
     "axios": "^1.2.1",
     "date-fns": "^2.29.3",
-    "dotenv-flow": "^3.2.0",
+    "dotenv": "^16.4.5",
     "jimp": "^0.16.2",
+    "jsonwebtoken": "^9.0.2",
     "node-telegram-bot-api": "^0.60.0"
   },
   "scripts": {
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@types/dotenv-flow": "^3.2.0",
     "@types/jimp": "^0.2.28",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^18.11.15",
     "@types/node-telegram-bot-api": "^0.57.6",
     "concurrently": "^7.6.0",
