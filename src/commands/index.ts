@@ -130,7 +130,7 @@ const commands: Commands = {
 
   async [COMMAND_TITLE.AUTH](msg) {
     msg.chat.id === Number(process.env.ADMIN_CHAT_ID)
-      ? await sendMessage(msg, new Auth().getResult())
+      ? await sendMessage(msg, new Auth().getResult(),{parse_mode:'HTML'})
       : await sendMessage(msg, generalMessage);
   }
 };

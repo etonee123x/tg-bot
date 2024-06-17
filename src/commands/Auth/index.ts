@@ -8,6 +8,6 @@ export default class Auth {
   }
 
   public getResult() {
-    return this.jwt;
+    return `<code>${this.jwt}</code>`;
   }
 }
