@@ -128,9 +128,9 @@ const commands: Commands = {
     );
   },
 
-  async [COMMAND_TITLE.AUTH](msg) {
+  async [COMMAND_TITLE.AUTH](msg, commandBody) {
     msg.chat.id === Number(process.env.ADMIN_CHAT_ID)
-      ? await sendMessage(msg, new Auth().getResult())
+      ? await sendMessage(msg, new Auth(commandBody).getResult(), { parse_mode: 'HTML' })
       : await sendMessage(msg, generalMessage);
   }
 };

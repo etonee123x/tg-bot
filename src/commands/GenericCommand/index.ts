@@ -62,7 +62,7 @@ export default class GenericCommand {
   }
 
   private getStringValue(paramTitle: string) {
-    const executed = new RegExp(`--${paramTitle} ([^ (--)]+)`, 'gmi').exec(this.commandBody);
+    const executed = new RegExp(`--${paramTitle} ([^ ]+)`, 'gmi').exec(this.commandBody);
     if (!executed) {
       throw new KnownError(_ERRORS_MESSAGES.missingValueForStringParam(paramTitle));
     }
