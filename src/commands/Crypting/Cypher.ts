@@ -1,8 +1,8 @@
-import GenericCommand from '@commands/GenericCommand';
-import { formAlphabet } from '@commands/Crypting';
+import { GenericCommand } from '@/commands/GenericCommand';
+import { formAlphabet } from '@/commands/Crypting';
 
-import keys from '@commands/Crypting/keys';
-import initialABCString from '@commands/Crypting/initialABCString';
+import { keys } from '@/commands/Crypting/keys';
+import { initialABCString } from '@/commands/Crypting/initialABCString';
 
 import type { CommandParams } from '@/types';
 
@@ -19,7 +19,7 @@ const params: CommandParams = {
   },
 };
 
-export default class Cypher extends GenericCommand {
+export class Cypher extends GenericCommand {
   private readonly phrase: string;
   protected readonly key: string;
 

@@ -1,6 +1,6 @@
-import Cypher from '@commands/Crypting/Cypher';
-import Decypher from '@commands/Crypting/Decypher';
-import initialABCString from '@commands/Crypting/initialABCString';
+export { Cypher } from '@/commands/Crypting/Cypher';
+export { Decypher } from '@/commands/Crypting/Decypher';
+import { initialABCString } from '@/commands/Crypting/initialABCString';
 
 export const formAlphabet = (key: string) => {
   let alphabet = '';
@@ -10,6 +10,7 @@ export const formAlphabet = (key: string) => {
       alphabet += keyChar;
     }
   });
+
   initialABCString.split('').forEach((abcChar) => {
     if (!alphabet.includes(abcChar)) {
       alphabet += abcChar;
@@ -18,5 +19,3 @@ export const formAlphabet = (key: string) => {
 
   return alphabet;
 };
-
-export { Cypher, Decypher };

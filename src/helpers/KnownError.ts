@@ -1,1 +1,1 @@
-export default class KnownError extends Error {}
+export class KnownError extends Error {}

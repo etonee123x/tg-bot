@@ -1,5 +1,5 @@
-import GenericPixelClass from '@commands/Pixel/GenericPixelClass';
-import KnownError from '@/helpers/KnownError';
+import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
+import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParams } from '@/types';
 
@@ -23,7 +23,7 @@ const _ERRORS_MESSAGES = {
     ].join(' '),
 };
 
-export default class Ascii extends GenericPixelClass {
+export class Ascii extends GenericPixelClass {
   private width: number;
   private readonly isCompact: boolean;
   private readonly palette = ' .,:;i1tfLCG08@'.split('');

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import GenericCommand from '@/commands/GenericCommand';
+import { GenericCommand } from '@/commands/GenericCommand';
 import { CommandParams } from '@/types';
 
 const params: CommandParams = {
@@ -15,7 +15,7 @@ const params: CommandParams = {
   },
 };
 
-export default class Auth extends GenericCommand {
+export class Auth extends GenericCommand {
   private readonly jwt: string;
   private readonly pattern: string;
 

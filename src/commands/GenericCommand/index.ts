@@ -1,4 +1,4 @@
-import KnownError from '@/helpers/KnownError';
+import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParamOptions, CommandParams } from '@/types';
 
@@ -9,7 +9,7 @@ const _ERRORS_MESSAGES = {
   missingValueForStringParam: (paramTitle: string) => `Value for string param ${paramTitle} is missing`,
 };
 
-export default class GenericCommand {
+export class GenericCommand {
   constructor(
     private readonly commandParams: CommandParams,
     private readonly commandBody: string = '',

@@ -1,16 +1,16 @@
 import 'dotenv/config';
 
 import { bot } from '@/bot';
-import commands from '@commands';
+import { commands } from '@/commands';
 import { isCommandTitle } from '@/types';
 
-import KnownError from '@/helpers/KnownError';
+import { KnownError } from '@/helpers/KnownError';
 import { sendMessage } from '@/helpers/sendMessage';
 
 import { cutMessage } from '@/utils/cutMessage';
 import { dateLog } from '@/utils/dateLog';
 
-import Help from './commands/Help';
+import { GENERAL_MESSAGE } from '@/constants/generalMessage';
 
 bot.on('message', async (message) => {
   const maybeMessageContent = message.text ?? message.caption;
@@ -33,7 +33,7 @@ bot.on('message', async (message) => {
   try {
     isCommandTitle(commandTitle)
       ? await commands[commandTitle](message, commandBody)
-      : await sendMessage(message, Help.GENERAL_MESSAGE);
+      : await sendMessage(message, GENERAL_MESSAGE);
   } catch (e) {
     const onKnownError = (e: KnownError) => sendMessage(message, 'Error: ' + e.message);
 

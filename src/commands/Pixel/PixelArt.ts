@@ -1,5 +1,5 @@
 import { MIME_JPEG } from 'jimp';
-import GenericPixelClass from '@commands/Pixel/GenericPixelClass';
+import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
 
 import type { CommandParams } from '@/types';
 
@@ -11,7 +11,7 @@ const params: CommandParams = {
   },
 };
 
-class PixelArt extends GenericPixelClass {
+export class PixelArt extends GenericPixelClass {
   private readonly cellSize: number;
 
   constructor(filePath: string, commandBody?: string) {
@@ -41,5 +41,3 @@ class PixelArt extends GenericPixelClass {
     };
   }
 }
-
-export default PixelArt;

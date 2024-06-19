@@ -1,7 +1,7 @@
 import Jimp from 'jimp';
-import GenericCommand from '@commands/GenericCommand';
+import { GenericCommand } from '@/commands/GenericCommand';
 import type { CommandParams } from '@/types';
-import KnownError from '@/helpers/KnownError';
+import { KnownError } from '@/helpers/KnownError';
 import { getFileByPath } from '@/api';
 
 interface RGBAColor {
@@ -16,7 +16,7 @@ const _ERRORS_MESSAGES = {
     `This image is too small to pixelizate it with x${cellSize} cell size, try to decrease (--size)`,
 };
 
-export default class GenericPixelClass extends GenericCommand {
+export class GenericPixelClass extends GenericCommand {
   private _jimpImage?: Jimp;
 
   constructor(

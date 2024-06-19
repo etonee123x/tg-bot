@@ -1,4 +1,5 @@
-import KnownError from '@/helpers/KnownError';
+import { GENERAL_MESSAGE } from '@/constants/generalMessage';
+import { KnownError } from '@/helpers/KnownError';
 import { COMMAND_TITLE, isCommandTitle } from '@/types';
 
 const ERRORS_MESSAGES = {
@@ -50,20 +51,7 @@ const COMMAND_TITLE_TO_HELP = {
   },
 } as const;
 
-export default class Help {
-  static GENERAL_MESSAGE = [
-    '/echo — echoing, lifecheck',
-    '/roll — simulation of dice rolls',
-    '/weather — sends data about the weather in the (--city)',
-    '/pixel — creates pixel art of the input image',
-    '/ascii — sends text that visually mimics the given image',
-    '/cypher — encrypts text',
-    "/decypher — decrypts ('text') with (--key)",
-    '/funny_animals — sends a picture of a funny animal :)',
-    '/happy_norming — sends a picture with a wish for a good day of the week today',
-    'send /help *command title* to get more info about this command',
-  ].join(';\n\n');
-
+export class Help {
   constructor(private readonly commandTitle: string) {}
 
   public getResult() {
@@ -83,7 +71,7 @@ export default class Help {
     const isCommandTitleExist = Boolean(this.commandTitle);
 
     return {
-      result: isCommandTitle(this.commandTitle) ? addSpecialDescription(this.commandTitle) : Help.GENERAL_MESSAGE,
+      result: isCommandTitle(this.commandTitle) ? addSpecialDescription(this.commandTitle) : GENERAL_MESSAGE,
       shouldUseMd: isCommandTitleExist,
     };
   }

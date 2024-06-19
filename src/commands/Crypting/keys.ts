@@ -1,4 +1,4 @@
-export default [
+export const keys = [
   'blow',
   'tin',
   'experience',
@@ -19,4 +19,4 @@ export default [
   'temper',
   'picture',
   'luxuriant',
-];
+] as const;

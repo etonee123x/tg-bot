@@ -1,4 +1,4 @@
-import KnownError from '@/helpers/KnownError';
+import { KnownError } from '@/helpers/KnownError';
 import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import { ofetch } from 'ofetch';
 

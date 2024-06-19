@@ -1,5 +1,5 @@
-import GenericCommand from '@commands/GenericCommand';
-import KnownError from '@/helpers/KnownError';
+import { GenericCommand } from '@/commands/GenericCommand';
+import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParams } from '@/types';
 
@@ -22,7 +22,7 @@ const _ERRORS_MESSAGES = {
     `There are no dices with ${dimensionsNumber} dimensions, increase --d`,
 };
 
-export default class DiceGame extends GenericCommand {
+export class DiceGame extends GenericCommand {
   private readonly dicesNumber: number;
   private readonly dimensionsNumber: number;
   private readonly results: number[] = [];

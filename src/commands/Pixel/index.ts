@@ -1,4 +1,2 @@
-import PixelArt from '@commands/Pixel/PixelArt';
-import Ascii from '@commands/Pixel/Ascii';
-
-export { PixelArt, Ascii };
+export { PixelArt } from '@/commands/Pixel/PixelArt';
+export { Ascii } from '@/commands/Pixel/Ascii';

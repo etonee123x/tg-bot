@@ -2,20 +2,21 @@ import { bot } from '@/bot';
 import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import type { Message } from 'node-telegram-bot-api';
 
-import DiceGame from './DiceGame';
-import Weather from './Weather';
+import { DiceGame } from './DiceGame';
+import { Weather } from './Weather';
 import { Ascii, PixelArt } from './Pixel';
 import { Cypher, Decypher } from './Crypting';
-import Help from './Help';
-import Auth from './Auth';
+import { Help } from './Help';
+import { Auth } from './Auth';
 import { getFunnyAnimals } from './FunnyAnimals/api';
 import { getHappyNorming } from './HappyNorming/api';
 
-import KnownError from '@/helpers/KnownError';
+import { KnownError } from '@/helpers/KnownError';
 import { sendMessage } from '@/helpers/sendMessage';
 import { COMMAND_TITLE } from '@/types';
+import { GENERAL_MESSAGE } from '@/constants/generalMessage';
 
-const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) => Promise<void>> = {
+export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) => Promise<void>> = {
   async [COMMAND_TITLE.ECHO](msg, commandBody) {
     await sendMessage(msg, commandBody || 'echoing!');
   },
@@ -100,8 +101,6 @@ const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) =>
   async [COMMAND_TITLE.AUTH](msg, commandBody) {
     msg.chat.id === Number(process.env.ADMIN_CHAT_ID)
       ? await sendMessage(msg, new Auth(commandBody).getResult(), { parse_mode: 'HTML' })
-      : await sendMessage(msg, Help.GENERAL_MESSAGE);
+      : await sendMessage(msg, GENERAL_MESSAGE);
   },
 };
-
-export default commands;

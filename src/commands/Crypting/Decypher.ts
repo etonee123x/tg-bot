@@ -1,7 +1,7 @@
-import GenericCommand from '@commands/GenericCommand';
-import { formAlphabet } from '@commands/Crypting';
+import { GenericCommand } from '@/commands/GenericCommand';
+import { formAlphabet } from '@/commands/Crypting';
 
-import initialABCString from '@commands/Crypting/initialABCString';
+import { initialABCString } from '@/commands/Crypting/initialABCString';
 
 import type { CommandParams } from '@/types';
 
@@ -18,7 +18,7 @@ const params: CommandParams = {
   },
 };
 
-export default class Decypher extends GenericCommand {
+export class Decypher extends GenericCommand {
   private readonly phrase: string;
   protected readonly key: string;
 

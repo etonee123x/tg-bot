@@ -1,6 +1,6 @@
 import { fromUnixTime, format } from 'date-fns';
-import GenericCommand from '@commands/GenericCommand';
-import KnownError from '@/helpers/KnownError';
+import { GenericCommand } from '@/commands/GenericCommand';
+import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParams } from '@/types';
 import { getWeather } from './api';
@@ -28,7 +28,7 @@ const _ERRORS_MESSAGES = {
   lessThan1Day: () => "Can't get the weather data for less than 1 day, increase (--days)",
 };
 
-export default class Weather extends GenericCommand {
+export class Weather extends GenericCommand {
   // @TODO: add languages
   private readonly country: string;
   private readonly city: string;
