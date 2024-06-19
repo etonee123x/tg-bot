@@ -1,9 +1,9 @@
 import { fromUnixTime, format } from 'date-fns';
 import { GenericCommand } from '@/commands/GenericCommand';
-import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParams } from '@/types';
 import { getWeather } from './api';
+import { createErrorClient } from '@shared/src/types';
 
 const params: CommandParams = {
   city: {
@@ -23,7 +23,7 @@ const params: CommandParams = {
   },
 };
 
-const _ERRORS_MESSAGES = {
+const ERRORS_MESSAGES = {
   moreThan5Days: () => "Can't get the weather data for more than 5 days, decrease (--days)",
   lessThan1Day: () => "Can't get the weather data for less than 1 day, increase (--days)",
 };
@@ -40,8 +40,8 @@ export class Weather extends GenericCommand {
     this.days = this.getValueForParam('days');
     if (this.days > 5 || this.days < 1) {
       throw this.days > 5
-        ? new KnownError(_ERRORS_MESSAGES.moreThan5Days())
-        : new KnownError(_ERRORS_MESSAGES.lessThan1Day());
+        ? createErrorClient(ERRORS_MESSAGES.moreThan5Days())
+        : createErrorClient(ERRORS_MESSAGES.lessThan1Day());
     }
 
     this.city = this.getValueForParam('city');

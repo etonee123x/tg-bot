@@ -1,7 +1,7 @@
 import { GenericCommand } from '@/commands/GenericCommand';
-import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParams } from '@/types';
+import { createErrorClient } from '@shared/src/types';
 
 const params: CommandParams = {
   n: {
@@ -16,7 +16,7 @@ const params: CommandParams = {
   },
 };
 
-const _ERRORS_MESSAGES = {
+const ERRORS_MESSAGES = {
   wrongDicesNumber: (dicesNumber: number) => `You cant throw ${dicesNumber} dices, increase --n`,
   wrongDimensionsNumber: (dimensionsNumber: number) =>
     `There are no dices with ${dimensionsNumber} dimensions, increase --d`,
@@ -33,12 +33,12 @@ export class DiceGame extends GenericCommand {
 
     this.dicesNumber = this.getValueForParam('n');
     if (this.dicesNumber < 1) {
-      throw new KnownError(_ERRORS_MESSAGES.wrongDicesNumber(this.dicesNumber));
+      throw createErrorClient(ERRORS_MESSAGES.wrongDicesNumber(this.dicesNumber));
     }
 
     this.dimensionsNumber = this.getValueForParam('d');
     if (this.dimensionsNumber < 2) {
-      throw new KnownError(_ERRORS_MESSAGES.wrongDimensionsNumber(this.dimensionsNumber));
+      throw createErrorClient(ERRORS_MESSAGES.wrongDimensionsNumber(this.dimensionsNumber));
     }
 
     for (let i = 0; i < this.dicesNumber; i++) {

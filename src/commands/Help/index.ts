@@ -1,6 +1,6 @@
 import { GENERAL_MESSAGE } from '@/constants/generalMessage';
-import { KnownError } from '@/helpers/KnownError';
 import { COMMAND_TITLE, isCommandTitle } from '@/types';
+import { createErrorClient } from '@shared/src/types';
 
 const ERRORS_MESSAGES = {
   commandNotFound: (commandTitle: string) => `Command '${commandTitle}' not found, send /help to see commands list`,
@@ -57,7 +57,7 @@ export class Help {
   public getResult() {
     const addSpecialDescription = (commandTitle: COMMAND_TITLE) => {
       if (commandTitle === COMMAND_TITLE.AUTH) {
-        throw new KnownError(ERRORS_MESSAGES.commandNotFound(commandTitle));
+        throw createErrorClient(ERRORS_MESSAGES.commandNotFound(commandTitle));
       }
 
       const theCommand = COMMAND_TITLE_TO_HELP[commandTitle];

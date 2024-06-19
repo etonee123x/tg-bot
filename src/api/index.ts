@@ -1,12 +1,12 @@
-import { KnownError } from '@/helpers/KnownError';
 import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import { ofetch } from 'ofetch';
+import { createErrorServer } from '@shared/src/types';
 
 export const client = ofetch.create({
   baseURL: String(process.env.API_URL),
 
   onResponseError() {
-    throw new KnownError(ERRORS_MESSAGES.FETCHING_ERROR());
+    throw createErrorServer(ERRORS_MESSAGES.FETCHING_ERROR());
   },
 });
 

@@ -1,6 +1,6 @@
 import { isNil, isRealObject } from '../../utils';
 
-interface CustomError {
+export interface CustomError {
   data: unknown;
   statusCode: number;
   __isCustomError: true;

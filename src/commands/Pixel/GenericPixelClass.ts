@@ -1,8 +1,8 @@
 import Jimp from 'jimp';
 import { GenericCommand } from '@/commands/GenericCommand';
 import type { CommandParams } from '@/types';
-import { KnownError } from '@/helpers/KnownError';
 import { getFileByPath } from '@/api';
+import { createErrorClient } from '@shared/src/types';
 
 interface RGBAColor {
   r: number;
@@ -11,7 +11,7 @@ interface RGBAColor {
   a: number;
 }
 
-const _ERRORS_MESSAGES = {
+const ERRORS_MESSAGES = {
   cellSizeIsTooLarge: (cellSize: number) =>
     `This image is too small to pixelizate it with x${cellSize} cell size, try to decrease (--size)`,
 };
@@ -38,7 +38,7 @@ export class GenericPixelClass extends GenericCommand {
     const yPix = Math.floor(this.image.getHeight() / cellSize);
 
     if (!(xPix && yPix)) {
-      throw new KnownError(_ERRORS_MESSAGES.cellSizeIsTooLarge(cellSize));
+      throw createErrorClient(ERRORS_MESSAGES.cellSizeIsTooLarge(cellSize));
     }
 
     this.image.crop(0, 0, xPix * cellSize, yPix * cellSize);

@@ -11,10 +11,10 @@ import { Auth } from './Auth';
 import { getFunnyAnimals } from './FunnyAnimals/api';
 import { getHappyNorming } from './HappyNorming/api';
 
-import { KnownError } from '@/helpers/KnownError';
 import { sendMessage } from '@/helpers/sendMessage';
 import { COMMAND_TITLE } from '@/types';
 import { GENERAL_MESSAGE } from '@/constants/generalMessage';
+import { createErrorClient } from '@shared/src/types';
 
 export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) => Promise<void>> = {
   async [COMMAND_TITLE.ECHO](msg, commandBody) {
@@ -33,7 +33,7 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
 
   async [COMMAND_TITLE.PIXEL](msg, commandBody) {
     if (!msg.photo) {
-      throw new KnownError(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
+      throw createErrorClient(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
     }
 
     const filePath = await bot.getFile(msg.photo[msg.photo.length - 1].file_id).then((p) => String(p.file_path));
@@ -47,7 +47,7 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
 
   async [COMMAND_TITLE.ASCII](msg, commandBody) {
     if (!msg.photo) {
-      throw new KnownError(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
+      throw createErrorClient(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
     }
 
     const filePath = await bot.getFile(msg.photo[msg.photo.length - 1].file_id).then((p) => String(p.file_path));

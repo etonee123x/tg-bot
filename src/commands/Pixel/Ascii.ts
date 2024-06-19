@@ -1,7 +1,7 @@
 import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
-import { KnownError } from '@/helpers/KnownError';
 
 import type { CommandParams } from '@/types';
+import { createErrorClient } from '@shared/src/types';
 
 const params: CommandParams = {
   W: {
@@ -15,7 +15,7 @@ const params: CommandParams = {
   },
 };
 
-const _ERRORS_MESSAGES = {
+const ERRORS_MESSAGES = {
   tooLargeSize: (isCompact: boolean) =>
     [
       'The final result will not fit in a single message, try decrease "--w" value',
@@ -71,7 +71,7 @@ export class Ascii extends GenericPixelClass {
     let yPix = Math.floor(this.image.getHeight() / cellSize);
 
     if (isResultLengthMoreThan4000(xPix, yPix)) {
-      throw new KnownError(_ERRORS_MESSAGES.tooLargeSize(this.isCompact));
+      throw createErrorClient(ERRORS_MESSAGES.tooLargeSize(this.isCompact));
     }
 
     let maxBrightness = 0;
