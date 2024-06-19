@@ -28,8 +28,3 @@ export enum COMMAND_TITLE {
 
 export const isCommandTitle = <T>(argument: T | COMMAND_TITLE): argument is COMMAND_TITLE =>
   isString(argument) && Object.values<string>(COMMAND_TITLE).includes(argument);
-
-export const ERRORS_MESSAGES = {
-  NO_REQUIRED_PHOTO: () => 'Attach a photo!',
-  FETCHING_ERROR: () => 'An error occured during fetching data from outer server!',
-};

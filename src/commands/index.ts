@@ -1,5 +1,5 @@
 import { bot } from '@/bot';
-import { COMMAND_TITLE, ERRORS_MESSAGES } from '@/types';
+import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import type { Message } from 'node-telegram-bot-api';
 
 import DiceGame from './DiceGame';
@@ -12,9 +12,8 @@ import { getFunnyAnimals } from './FunnyAnimals/api';
 import { getHappyNorming } from './HappyNorming/api';
 
 import KnownError from '@/helpers/KnownError';
-
-import generalMessage from './Help/generalMessage';
 import { sendMessage } from '@/helpers/sendMessage';
+import { COMMAND_TITLE } from '@/types';
 
 const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) => Promise<void>> = {
   async [COMMAND_TITLE.ECHO](msg, commandBody) {
@@ -101,7 +100,7 @@ const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) =>
   async [COMMAND_TITLE.AUTH](msg, commandBody) {
     msg.chat.id === Number(process.env.ADMIN_CHAT_ID)
       ? await sendMessage(msg, new Auth(commandBody).getResult(), { parse_mode: 'HTML' })
-      : await sendMessage(msg, generalMessage);
+      : await sendMessage(msg, Help.GENERAL_MESSAGE);
   },
 };
 

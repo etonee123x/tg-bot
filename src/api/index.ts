@@ -1,5 +1,5 @@
 import KnownError from '@/helpers/KnownError';
-import { ERRORS_MESSAGES } from '@/types';
+import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import { ofetch } from 'ofetch';
 
 export const client = ofetch.create({
