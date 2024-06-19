@@ -1,10 +1,5 @@
-import { GenericCommand } from '@/commands/GenericCommand';
-import { formAlphabet } from '@/commands/Crypting';
-
-import { keys } from '@/commands/Crypting/keys';
-import { initialABCString } from '@/commands/Crypting/initialABCString';
-
 import type { CommandParams } from '@/types';
+import { Crypting } from './Crypting';
 
 const params: CommandParams = {
   phrase: {
@@ -19,30 +14,24 @@ const params: CommandParams = {
   },
 };
 
-export class Cypher extends GenericCommand {
-  private readonly phrase: string;
-  protected readonly key: string;
-
+export class Cypher extends Crypting {
   constructor(commandBody?: string) {
-    super(params, commandBody);
-    this.phrase = this.getValueForParam('phrase').toLowerCase();
-    this.key = this.getValueForParam('key')?.toLowerCase() ?? keys[Math.floor(keys.length * Math.random())];
+    super({
+      parametersGenericCommand: [params, commandBody],
+      fallback: Crypting.KEYS[Math.floor(Crypting.KEYS.length * Math.random())],
+    });
   }
 
   public getResult() {
-    const tripleBackticks = '```';
-    const alphabet = formAlphabet(this.key);
+    const TRIPLE_BACKTICKS = '```';
 
     return (
-      this.phrase
-        .split('')
-        .reduce(
-          (acc, char, i) =>
-            (acc += initialABCString.includes(char)
-              ? alphabet[(initialABCString.indexOf(char) + i) % initialABCString.length]
-              : char),
-          `${tripleBackticks}\n'`,
-        ) + `'\n${tripleBackticks}\ncyphered with ${tripleBackticks} --key ${this.key}${tripleBackticks}`
+      this.phrase.split('').reduce((acc, char) => {
+        const index = this.alphabet.indexOf(char) % this.alphabet.length;
+
+        return (acc += Crypting.INITIAL_ABC_STRING.includes(char) ? Crypting.INITIAL_ABC_STRING[index] : char);
+      }, `${TRIPLE_BACKTICKS}\n'`) +
+      `'\n${TRIPLE_BACKTICKS}\ncyphered with ${TRIPLE_BACKTICKS} --key ${this.key}${TRIPLE_BACKTICKS}`
     );
   }
 }
