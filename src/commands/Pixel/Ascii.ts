@@ -1,6 +1,5 @@
 import GenericPixelClass from '@commands/Pixel/GenericPixelClass';
 import KnownError from '@/helpers/KnownError';
-import { joinStr } from '@/utils';
 
 import type { CommandParams } from '@/types';
 
@@ -18,11 +17,10 @@ const params: CommandParams = {
 
 const _ERRORS_MESSAGES = {
   tooLargeSize: (isCompact: boolean) =>
-    joinStr(
+    [
       'The final result will not fit in a single message, try decrease "--w" value',
-      !isCompact && 'or use the "--compact" flag',
-      ' ',
-    ),
+      ...(isCompact ? [] : ['or use the "--compact" flag']),
+    ].join(' '),
 };
 
 export default class Ascii extends GenericPixelClass {
@@ -45,6 +43,7 @@ export default class Ascii extends GenericPixelClass {
 
       return result > 4000;
     };
+
     const getLastWidthBeforeResultLengthWillBecomeMoreThan4000 = () => {
       let cellSize = 0;
       let h: number;
@@ -58,6 +57,7 @@ export default class Ascii extends GenericPixelClass {
 
       return Math.min(w - 1, this.image.getWidth());
     };
+
     const getGray = (x: number, y: number) => {
       const { r, g, b } = this.getPixelColor(x, y);
 

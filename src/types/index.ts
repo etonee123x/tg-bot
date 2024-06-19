@@ -1,3 +1,5 @@
+import { isString } from '@shared/src/utils';
+
 export interface CommandParamOptions {
   title: string;
   required?: boolean;
@@ -23,6 +25,9 @@ export enum COMMAND_TITLE {
   HELP = 'help',
   AUTH = 'auth',
 }
+
+export const isCommandTitle = <T>(argument: T | COMMAND_TITLE): argument is COMMAND_TITLE =>
+  isString(argument) && Object.values<string>(COMMAND_TITLE).includes(argument);
 
 export const ERRORS_MESSAGES = {
   NO_REQUIRED_PHOTO: () => 'Attach a photo!',

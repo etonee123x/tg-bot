@@ -1,7 +1,6 @@
 import { fromUnixTime, format } from 'date-fns';
 import GenericCommand from '@commands/GenericCommand';
 import KnownError from '@/helpers/KnownError';
-import { joinStr } from '@/utils';
 
 import type { CommandParams } from '@/types';
 import { getWeather } from './api';
@@ -57,14 +56,13 @@ export default class Weather extends GenericCommand {
       .reduce(
         (acc, item) =>
           (acc +=
-            joinStr(
+            [
               `${format(fromUnixTime(item.dt), 'dd/MM, H')}h:`,
               `Avg. temp: ${item.main.temp > 0 ? `+${item.main.temp}` : item.main.temp}°C`,
               `Cloudiness: ${item.clouds.all}%`,
               `Wind: ~${item.wind.speed}m/s (up to ${item.wind.gust}m/s)`,
               `Pressure: ${((item.main.pressure * 760) / 1013.25).toFixed(0)}mm Hg`,
-              '\n',
-            ) + '\n\n'),
+            ].join('\n') + '\n\n'),
         `Here's a weather forecast for ${this.days > 1 ? `${this.days} days` : 'a day'} forward in ${this.city}:\n\n`,
       )
       .trim();

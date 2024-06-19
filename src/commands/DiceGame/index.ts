@@ -1,6 +1,5 @@
 import GenericCommand from '@commands/GenericCommand';
 import KnownError from '@/helpers/KnownError';
-import { joinStr } from '@/utils';
 
 import type { CommandParams } from '@/types';
 
@@ -51,11 +50,12 @@ export default class DiceGame extends GenericCommand {
   }
 
   public getResult() {
-    return joinStr(
-      `You've thrown ${this.dicesNumber} x d${this.dimensionsNumber} ${this.dicesNumber > 1 ? 'dices' : 'dice'}:`,
+    return [
+      [`You've thrown ${this.dicesNumber} x d${this.dimensionsNumber}`, this.dicesNumber > 1 ? 'dices' : 'dice'].join(
+        ' ',
+      ),
       `results: [ ${this.results.join(', ')} ]`,
       `sum: ${this.sum}`,
-      '\n',
-    );
+    ].join('\n');
   }
 }

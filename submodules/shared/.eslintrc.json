@@ -1,0 +1,36 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": ".",
+    "project": true
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint",
+    "import"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/member-delimiter-style": "error",
+    "@typescript-eslint/no-unsafe-declaration-merging": "off",
+    "no-sparse-arrays": "off",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always"
+      }
+    ]
+  }
+}

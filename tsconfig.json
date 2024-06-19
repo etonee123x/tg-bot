@@ -16,6 +16,9 @@
       ],
       "@commands/*": [
         "./src/commands/*"
+      ],
+      "@shared/*": [
+        "./submodules/shared/*"
       ]
     }
   },

@@ -1,3 +1,3 @@
 import TelegramBot from 'node-telegram-bot-api';
 
-export default new TelegramBot(String(process.env.TOKEN), { polling: true });
+export const bot = new TelegramBot(String(process.env.TOKEN), { polling: true });

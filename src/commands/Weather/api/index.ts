@@ -23,9 +23,7 @@ interface GetWeatherResponse {
       description: string;
       icon: string;
     }>;
-    clouds: {
-      all: number;
-    };
+    clouds: { all: number };
     wind: {
       speed: number;
       deg: number;
@@ -33,15 +31,9 @@ interface GetWeatherResponse {
     };
     visibility: number;
     pop: number;
-    rain?: {
-      '3h': number;
-    };
-    snow?: {
-      '3h': number;
-    };
-    sys: {
-      pod: string;
-    };
+    rain?: { '3h': number };
+    snow?: { '3h': number };
+    sys: { pod: string };
     dt_txt: string;
   }>;
 }

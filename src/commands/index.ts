@@ -1,25 +1,22 @@
-import { sendMessage } from '@/common';
-import botInstance from '@/bot';
+import { bot } from '@/bot';
 import { COMMAND_TITLE, ERRORS_MESSAGES } from '@/types';
-
-import DiceGame from '@commands/DiceGame';
-import Weather from '@commands/Weather';
-import { Ascii, PixelArt } from '@commands/Pixel';
-import { Cypher, Decypher } from '@commands/Crypting';
-import Help from '@commands/Help';
-import KnownError from '@/helpers/KnownError';
-import Auth from '@commands/Auth';
-
 import type { Message } from 'node-telegram-bot-api';
-import generalMessage from '@/commands/Help/generalMessage';
-import { getFunnyAnimals } from '@/commands/FunnyAnimals/api';
-import { getHappyNorming } from '@/commands/HappyNorming/api';
 
-type Commands = {
-  [commandTitle in COMMAND_TITLE]: (message: Message, commandBody: string, ...args: unknown[]) => Promise<void>;
-};
+import DiceGame from './DiceGame';
+import Weather from './Weather';
+import { Ascii, PixelArt } from './Pixel';
+import { Cypher, Decypher } from './Crypting';
+import Help from './Help';
+import Auth from './Auth';
+import { getFunnyAnimals } from './FunnyAnimals/api';
+import { getHappyNorming } from './HappyNorming/api';
 
-const commands: Commands = {
+import KnownError from '@/helpers/KnownError';
+
+import generalMessage from './Help/generalMessage';
+import { sendMessage } from '@/helpers/sendMessage';
+
+const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) => Promise<void>> = {
   async [COMMAND_TITLE.ECHO](msg, commandBody) {
     await sendMessage(msg, commandBody || 'echoing!');
   },
@@ -39,12 +36,10 @@ const commands: Commands = {
       throw new KnownError(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
     }
 
-    const filePath = await botInstance
-      .getFile(msg.photo[msg.photo.length - 1].file_id)
-      .then((p) => String(p.file_path));
+    const filePath = await bot.getFile(msg.photo[msg.photo.length - 1].file_id).then((p) => String(p.file_path));
     const { bufferedImage, caption } = await new PixelArt(filePath, commandBody).getResult();
 
-    await botInstance.sendPhoto(msg.chat.id, bufferedImage, {
+    await bot.sendPhoto(msg.chat.id, bufferedImage, {
       reply_to_message_id: msg.message_id,
       caption,
     });
@@ -55,9 +50,7 @@ const commands: Commands = {
       throw new KnownError(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
     }
 
-    const filePath = await botInstance
-      .getFile(msg.photo[msg.photo.length - 1].file_id)
-      .then((p) => String(p.file_path));
+    const filePath = await bot.getFile(msg.photo[msg.photo.length - 1].file_id).then((p) => String(p.file_path));
     const result = await new Ascii(filePath, commandBody).getResult();
 
     await sendMessage(msg, result, {
@@ -83,7 +76,7 @@ const commands: Commands = {
   async [COMMAND_TITLE.HAPPY_NORMING](msg) {
     const happyNorming = await getHappyNorming();
 
-    await botInstance.sendPhoto(msg.chat.id, happyNorming, {
+    await bot.sendPhoto(msg.chat.id, happyNorming, {
       reply_to_message_id: msg.message_id,
     });
   },
@@ -91,7 +84,7 @@ const commands: Commands = {
   async [COMMAND_TITLE.FUNNY_ANIMALS](msg) {
     const funnyAnimals = await getFunnyAnimals();
 
-    await botInstance.sendPhoto(msg.chat.id, funnyAnimals, {
+    await bot.sendPhoto(msg.chat.id, funnyAnimals, {
       reply_to_message_id: msg.message_id,
     });
   },
@@ -101,7 +94,7 @@ const commands: Commands = {
 
     await sendMessage(msg, result, {
       reply_to_message_id: msg.message_id,
-      parse_mode: shouldUseMd ? 'Markdown' : undefined,
+      ...(shouldUseMd ? { parse_mode: 'Markdown' } : {}),
     });
   },
 
