@@ -1,4 +1,4 @@
-import { MIME_JPEG } from 'jimp'
+import { MIME_JPEG } from 'jimp';
 import GenericPixelClass from '@commands/Pixel/GenericPixelClass';
 
 import type { CommandParams } from '@/types';
@@ -14,12 +14,12 @@ const params: CommandParams = {
 class PixelArt extends GenericPixelClass {
   private readonly cellSize: number;
 
-  constructor(filePath: string, commandBody?: string) {
+  constructor (filePath: string, commandBody?: string) {
     super(filePath, params, commandBody);
     this.cellSize = this.getValueForParam('size');
   }
 
-  public async getResult() {
+  public async getResult () {
     await this.readBuffer();
 
     const { xPix, yPix } = this.crop(this.cellSize);
@@ -35,8 +35,8 @@ class PixelArt extends GenericPixelClass {
 
     return {
       caption: `The image with pixels x${this.cellSize} larger than usual`,
-      bufferedImage: await this.image.getBufferAsync(MIME_JPEG)
-    }
+      bufferedImage: await this.image.getBufferAsync(MIME_JPEG),
+    };
   }
 }
 

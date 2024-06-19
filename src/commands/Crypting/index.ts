@@ -14,7 +14,7 @@ export const formAlphabet = (key: string) => {
       alphabet += abcChar;
     }
   });
-  return alphabet
-}
+  return alphabet;
+};
 
 export { Cypher, Decypher };

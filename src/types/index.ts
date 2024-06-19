@@ -1,12 +1,13 @@
-export interface CommandParams {
-  [title: string]: CommandParamOptions;
-}
-
 export interface CommandParamOptions {
   title: string;
   required?: boolean;
   type: 'string' | 'boolean' | 'number' | 'text';
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   default?: any;
+}
+
+export interface CommandParams {
+  [title: string]: CommandParamOptions;
 }
 
 export enum COMMAND_TITLE {
@@ -20,13 +21,10 @@ export enum COMMAND_TITLE {
   HAPPY_NORMING = 'happy_norming',
   FUNNY_ANIMALS = 'funny_animals',
   HELP = 'help',
-  PARSE = 'parse',
   AUTH = 'auth',
 }
 
 export const ERRORS_MESSAGES = {
-  NO_PARSER_OPTIONS: () => 'Add parser options!',
   NO_REQUIRED_PHOTO: () => 'Attach a photo!',
-  TOO_LARGE_FILE: () => 'This file is too large, TG bots dont work with files larger than 20MB!',
-  FETCHING_ERROR: () => 'An error occured during fetching data from outer server!'
-}
+  FETCHING_ERROR: () => 'An error occured during fetching data from outer server!',
+};

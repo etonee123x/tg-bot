@@ -3,20 +3,19 @@ import KnownError from '@/helpers/KnownError';
 import type { CommandParamOptions, CommandParams } from '@/types';
 
 const _ERRORS_MESSAGES = {
-  MISSING_VALUE_FOR_TEXT_PARAM: () => `Value for text param is missing`,
-  missingRequiredParam: (type: CommandParamOptions["type"], title: string) =>
+  MISSING_VALUE_FOR_TEXT_PARAM: () => 'Value for text param is missing',
+  missingRequiredParam: (type: CommandParamOptions['type'], title: string) =>
     `Missing required ${type} param ${title}`,
   wrongParamType: (paramTitle: string) =>
     `Wrong type for param ${paramTitle}, it should be number`,
   missingValueForStringParam: (paramTitle: string) =>
     `Value for string param ${paramTitle} is missing`,
-}
+};
 
 export default class GenericCommand {
+  constructor (private readonly commandParams: CommandParams, private readonly commandBody: string = '') {}
 
-  constructor(private readonly commandParams: CommandParams, private readonly commandBody: string = '') {}
-
-  protected getParamValue(param: CommandParamOptions) {
+  protected getParamValue (param: CommandParamOptions) {
     switch (param.type) {
       case 'number':
         if (param.required) this.checkIfParamIsPresent(param);
@@ -33,17 +32,17 @@ export default class GenericCommand {
     }
   }
 
-  protected getValueForParam(paramTitle: string) {
+  protected getValueForParam (paramTitle: string) {
     return this.checkIfParamIsPresent(this.commandParams[paramTitle])
       ? this.getParamValue(this.commandParams[paramTitle])
-      : this.commandParams[paramTitle].default
+      : this.commandParams[paramTitle].default;
   }
 
-  private checkIfParamIsPresent(param: CommandParamOptions) {
+  private checkIfParamIsPresent (param: CommandParamOptions) {
     const executed = new RegExp(
       param.type !== 'text'
         ? `--${param.title}`
-        : "'.*'", 'gmi'
+        : "'.*'", 'gmi',
     ).exec(this.commandBody);
     if (!!param.required && !executed) {
       throw new KnownError(_ERRORS_MESSAGES.missingRequiredParam(param.type, param.title));
@@ -52,7 +51,7 @@ export default class GenericCommand {
     return !!executed;
   }
 
-  private getNumberValue(paramTitle: string) {
+  private getNumberValue (paramTitle: string) {
     const executed = new RegExp(`--${paramTitle} (-?\\d+)`, 'gmi').exec(this.commandBody);
     if (!executed) {
       throw new KnownError(_ERRORS_MESSAGES.wrongParamType(paramTitle));
@@ -61,7 +60,7 @@ export default class GenericCommand {
     return Number(executed[1]);
   }
 
-  private getStringValue(paramTitle: string) {
+  private getStringValue (paramTitle: string) {
     const executed = new RegExp(`--${paramTitle} ([^ ]+)`, 'gmi').exec(this.commandBody);
     if (!executed) {
       throw new KnownError(_ERRORS_MESSAGES.missingValueForStringParam(paramTitle));
@@ -70,8 +69,8 @@ export default class GenericCommand {
     return executed[1];
   }
 
-  private getTextValue() {
-    const executed = new RegExp("(?<=').*(?=')").exec(this.commandBody);
+  private getTextValue () {
+    const executed = /(?<=').*(?=')"/.exec(this.commandBody);
     if (!executed) {
       throw new KnownError(_ERRORS_MESSAGES.MISSING_VALUE_FOR_TEXT_PARAM());
     }

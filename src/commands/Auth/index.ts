@@ -19,16 +19,16 @@ export default class Auth extends GenericCommand {
   private readonly jwt: string;
   private readonly pattern: string;
 
-  constructor(commandBody?: string) {
+  constructor (commandBody?: string) {
     super(params, commandBody);
 
     const isLong = this.getValueForParam('long');
 
-    this.pattern = this.getValueForParam('pattern')
+    this.pattern = this.getValueForParam('pattern');
     this.jwt = jwt.sign({ role: 'Admin' }, String(process.env.SECRET_KEY), { expiresIn: isLong ? '1d' : '1h' });
   }
 
-  public getResult() {
+  public getResult () {
     return this.pattern ? this.pattern.replace('[token]', this.jwt) : `<code>${this.jwt}</code>`;
   }
 }

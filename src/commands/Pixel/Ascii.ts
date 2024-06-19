@@ -21,46 +21,46 @@ const _ERRORS_MESSAGES = {
     joinStr(
       'The final result will not fit in a single message, try decrease "--w" value',
       !isCompact && 'or use the "--compact" flag',
-      ' '
-    )
-}
+      ' ',
+    ),
+};
 
 export default class Ascii extends GenericPixelClass {
   private width: number;
   private readonly isCompact: boolean;
-  private readonly palette = ' .,:;i1tfLCG08@'.split('')
+  private readonly palette = ' .,:;i1tfLCG08@'.split('');
 
-  constructor(filePath: string, commandBody?: string) {
+  constructor (filePath: string, commandBody?: string) {
     super(filePath, params, commandBody);
     this.isCompact = this.getValueForParam('compact');
     this.width = this.getValueForParam('W');
   }
 
-  public async getResult() {
+  public async getResult () {
     const isResultLengthMoreThan4000 = (w: number, h: number) => {
       const markdownLength = '```\n```'.length;
       const newLineSignsLength = h;
       const singleSymbolLength = this.isCompact ? 1 : 2;
       const result = markdownLength + w * h * singleSymbolLength + newLineSignsLength - h * Number(this.isCompact);
       return result > 4000;
-    }
+    };
     const getLastWidthBeforeResultLengthWillBecomeMoreThan4000 = () => {
-      let cellSize = 0, h: number, w: number;
+      let cellSize = 0; let h: number; let w: number;
       do {
         ++cellSize;
         h = Math.floor(this.image.getHeight() / cellSize);
         w = Math.floor(this.image.getWidth() / cellSize);
       } while (
-        isResultLengthMoreThan4000(w, h) &&
-        w <= this.image.getWidth() &&
-        h <= this.image.getHeight()
+        isResultLengthMoreThan4000(w, h)
+        && w <= this.image.getWidth()
+        && h <= this.image.getHeight()
       );
       return Math.min(w - 1, this.image.getWidth());
-    }
+    };
     const getGray = (x: number, y: number) => {
-      const { r, g, b} = this.getPixelColor(x, y);
+      const { r, g, b } = this.getPixelColor(x, y);
       return Math.floor((r + g + b) / 3);
-    }
+    };
 
     await this.readBuffer();
 
@@ -71,8 +71,8 @@ export default class Ascii extends GenericPixelClass {
       throw new KnownError(_ERRORS_MESSAGES.tooLargeSize(this.isCompact));
     }
 
-    let maxBrightness = 0
-    const grayTable: number[][] = []
+    let maxBrightness = 0;
+    const grayTable: number[][] = [];
 
     const sizes = this.crop(cellSize);
     xPix = sizes.xPix;
@@ -89,7 +89,7 @@ export default class Ascii extends GenericPixelClass {
         grayTable[h].push(gray);
       }
     }
-    
+
     let result = '```\n';
     for (let i = 0; i < grayTable.length; i++) {
       for (let j = 0; j < grayTable[i].length; j++) {
@@ -100,6 +100,6 @@ export default class Ascii extends GenericPixelClass {
     }
     result += '```';
 
-    return result
+    return result;
   }
 }
