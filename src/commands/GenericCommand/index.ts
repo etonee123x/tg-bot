@@ -74,7 +74,7 @@ export class GenericCommand {
   }
 
   private getTextValue() {
-    const executed = /(?<=').*(?=')"/.exec(this.commandBody);
+    const executed = /(?<=').*(?=')/.exec(this.commandBody);
 
     if (!executed) {
       throw createErrorClient(ERRORS_MESSAGES.MISSING_VALUE_FOR_TEXT_PARAM());
