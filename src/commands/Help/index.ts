@@ -30,11 +30,11 @@ const commands = {
       examples: ['/ascii', '/ascii --W 15', '/ascii --compact'],
     },
     [COMMAND_TITLE.CYPHER]: {
-      desc: '/cypher: (\ntext phrase (auto),\nstring key (auto)\n) — encrypts (\'text\') by (--key).',
+      desc: "/cypher: (\ntext phrase (auto),\nstring key (auto)\n) — encrypts ('text') by (--key).",
       examples: ['/cypher', "/cypher 'cypher this'", '/cypher --key key'],
     },
     [COMMAND_TITLE.DECYPHER]: {
-      desc: '/decypher: (\ntext phrase (required),\nstring key (required)\n) - decrypts (\'text\') by (--key).',
+      desc: "/decypher: (\ntext phrase (required),\nstring key (required)\n) - decrypts ('text') by (--key).",
       examples: ["/decypher --key key 'decypher this'"],
     },
     [COMMAND_TITLE.FUNNY_ANIMALS]: {
@@ -54,17 +54,16 @@ const commands = {
 };
 
 const _ERRORS_MESSAGES = {
-  commandNotFound: (commandTitle: string) =>
-    `Command '${commandTitle}' not found, send /help to see commands list`,
+  commandNotFound: (commandTitle: string) => `Command '${commandTitle}' not found, send /help to see commands list`,
 };
 
 export default class Help {
-  constructor (private readonly commandTitle: string) {
-  }
+  constructor(private readonly commandTitle: string) {}
 
-  public getResult () {
+  public getResult() {
     const addSpecialDescription = (commandTitle: string) => {
       const theCommand = commands.commands[commandTitle as COMMAND_TITLE];
+
       if (!theCommand) {
         throw new KnownError(_ERRORS_MESSAGES.commandNotFound(commandTitle));
       }
@@ -76,6 +75,7 @@ export default class Help {
     };
 
     const isCommandTitleExist = Boolean(this.commandTitle);
+
     return {
       result: isCommandTitleExist ? addSpecialDescription(this.commandTitle) : commands.generalMessage,
       shouldUseMd: isCommandTitleExist,

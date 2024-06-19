@@ -4,6 +4,7 @@ import initialABCString from '@commands/Crypting/initialABCString';
 
 export const formAlphabet = (key: string) => {
   let alphabet = '';
+
   key.split('').forEach((keyChar) => {
     if (!alphabet.includes(keyChar)) {
       alphabet += keyChar;
@@ -14,6 +15,7 @@ export const formAlphabet = (key: string) => {
       alphabet += abcChar;
     }
   });
+
   return alphabet;
 };
 

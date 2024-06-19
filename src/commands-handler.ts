@@ -7,7 +7,7 @@ import { joinStr } from '@/utils';
 
 import type { Message } from 'node-telegram-bot-api';
 
-const onError = async ({ message, e }: { message: Message, e: unknown }) => {
+const onError = async ({ message, e }: { message: Message; e: unknown }) => {
   const onKnownError = (e: KnownError) => {
     sendMessage(message, 'Error: ' + e.message);
   };
@@ -19,21 +19,23 @@ const onError = async ({ message, e }: { message: Message, e: unknown }) => {
   };
 
   console.error(e);
-  return e instanceof KnownError
-    ? onKnownError(e)
-    : onUnknownError();
+
+  return e instanceof KnownError ? onKnownError(e) : onUnknownError();
 };
 
 export default async (message: Message, messageContent: string) => {
-  dateLog(joinStr(
-    `New message "${cutMessage(messageContent)}"`,
-    `in chat ${message.chat.id}`,
-    message.from && `(from ${message.from.first_name})`,
-    ' ',
-  ));
+  dateLog(
+    joinStr(
+      `New message "${cutMessage(messageContent)}"`,
+      `in chat ${message.chat.id}`,
+      message.from && `(from ${message.from.first_name})`,
+      ' ',
+    ),
+  );
 
   const commandBody = messageContent.split(' ').slice(1).join(' ');
   const commandTitle = String(messageContent.match(/(?<=\/)[^\s]+/)?.[0]);
+
   try {
     Object.values(COMMAND_TITLE).includes(commandTitle as COMMAND_TITLE)
       ? await commands[commandTitle as COMMAND_TITLE](message, commandBody)

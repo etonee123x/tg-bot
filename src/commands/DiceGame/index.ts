@@ -18,8 +18,7 @@ const params: CommandParams = {
 };
 
 const _ERRORS_MESSAGES = {
-  wrongDicesNumber: (dicesNumber: number) =>
-    `You cant throw ${dicesNumber} dices, increase --n`,
+  wrongDicesNumber: (dicesNumber: number) => `You cant throw ${dicesNumber} dices, increase --n`,
   wrongDimensionsNumber: (dimensionsNumber: number) =>
     `There are no dices with ${dimensionsNumber} dimensions, increase --d`,
 };
@@ -30,7 +29,7 @@ export default class DiceGame extends GenericCommand {
   private readonly results: number[] = [];
   private readonly sum: number = 0;
 
-  constructor (commandBody?: string) {
+  constructor(commandBody?: string) {
     super(params, commandBody);
 
     this.dicesNumber = this.getValueForParam('n');
@@ -45,12 +44,13 @@ export default class DiceGame extends GenericCommand {
 
     for (let i = 0; i < this.dicesNumber; i++) {
       const result = Math.floor(Math.random() * this.dimensionsNumber) + 1;
+
       this.results.push(result);
       this.sum += result;
     }
   }
 
-  public getResult () {
+  public getResult() {
     return joinStr(
       `You've thrown ${this.dicesNumber} x d${this.dimensionsNumber} ${this.dicesNumber > 1 ? 'dices' : 'dice'}:`,
       `results: [ ${this.results.join(', ')} ]`,

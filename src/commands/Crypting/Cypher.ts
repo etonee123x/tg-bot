@@ -23,20 +23,26 @@ export default class Cypher extends GenericCommand {
   private readonly phrase: string;
   protected readonly key: string;
 
-  constructor (commandBody?: string) {
+  constructor(commandBody?: string) {
     super(params, commandBody);
     this.phrase = this.getValueForParam('phrase').toLowerCase();
     this.key = this.getValueForParam('key')?.toLowerCase() ?? keys[Math.floor(keys.length * Math.random())];
   }
 
-  public getResult () {
+  public getResult() {
     const tripleBackticks = '```';
     const alphabet = formAlphabet(this.key);
-    return this.phrase.split('').reduce(
-      (acc, char, i) => (acc += initialABCString.includes(char)
-        ? alphabet[(initialABCString.indexOf(char) + i) % initialABCString.length]
-        : char),
-      `${tripleBackticks}\n'`,
-    ) + `'\n${tripleBackticks}\ncyphered with ${tripleBackticks} --key ${this.key}${tripleBackticks}`;
+
+    return (
+      this.phrase
+        .split('')
+        .reduce(
+          (acc, char, i) =>
+            (acc += initialABCString.includes(char)
+              ? alphabet[(initialABCString.indexOf(char) + i) % initialABCString.length]
+              : char),
+          `${tripleBackticks}\n'`,
+        ) + `'\n${tripleBackticks}\ncyphered with ${tripleBackticks} --key ${this.key}${tripleBackticks}`
+    );
   }
 }

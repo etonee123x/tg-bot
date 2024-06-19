@@ -22,25 +22,26 @@ export default class Decypher extends GenericCommand {
   private readonly phrase: string;
   protected readonly key: string;
 
-  constructor (commandBody?: string) {
+  constructor(commandBody?: string) {
     super(params, commandBody);
     this.phrase = this.getValueForParam('phrase').toLowerCase();
     this.key = this.getValueForParam('key').toLowerCase();
   }
 
-  public getResult () {
+  public getResult() {
     const tripleBackticks = '```';
     const alphabet = formAlphabet(this.key);
-    return this.phrase.split('').reduce(
-      (acc, char, i) => {
-        const index = (alphabet.indexOf(this.phrase[i]) - (i % initialABCString.length) + initialABCString.length)
-          % initialABCString.length;
-        acc += initialABCString.includes(char)
-          ? alphabet[index]
-          : char;
+
+    return (
+      this.phrase.split('').reduce((acc, char, i) => {
+        const index =
+          (alphabet.indexOf(this.phrase[i]) - (i % initialABCString.length) + initialABCString.length) %
+          initialABCString.length;
+
+        acc += initialABCString.includes(char) ? alphabet[index] : char;
+
         return acc;
-      },
-      `the cyphered text was: ${tripleBackticks}`,
-    ) + `${tripleBackticks}`;
+      }, `the cyphered text was: ${tripleBackticks}`) + `${tripleBackticks}`
+    );
   }
 }

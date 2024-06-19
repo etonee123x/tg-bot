@@ -25,10 +25,8 @@ const params: CommandParams = {
 };
 
 const _ERRORS_MESSAGES = {
-  moreThan5Days: () =>
-    "Can't get the weather data for more than 5 days, decrease (--days)",
-  lessThan1Day: () =>
-    "Can't get the weather data for less than 1 day, increase (--days)",
+  moreThan5Days: () => "Can't get the weather data for more than 5 days, decrease (--days)",
+  lessThan1Day: () => "Can't get the weather data for less than 1 day, increase (--days)",
 };
 
 export default class Weather extends GenericCommand {
@@ -37,7 +35,7 @@ export default class Weather extends GenericCommand {
   private readonly city: string;
   private readonly days: number;
 
-  constructor (commandBody?: string) {
+  constructor(commandBody?: string) {
     super(params, commandBody);
 
     this.days = this.getValueForParam('days');
@@ -51,20 +49,22 @@ export default class Weather extends GenericCommand {
     this.country = this.getValueForParam('country');
   }
 
-  public async getResult () {
+  public async getResult() {
     const weather = await getWeather({ city: this.city, country: this.country });
 
     return weather.list
       .slice(0, this.days * 8)
       .reduce(
-        (acc, item) => (acc += joinStr(
-          `${format(fromUnixTime(item.dt), 'dd/MM, H')}h:`,
-          `Avg. temp: ${item.main.temp > 0 ? `+${item.main.temp}` : item.main.temp}°C`,
-          `Cloudiness: ${item.clouds.all}%`,
-          `Wind: ~${item.wind.speed}m/s (up to ${item.wind.gust}m/s)`,
-          `Pressure: ${((item.main.pressure * 760) / 1013.25).toFixed(0)}mm Hg`,
-          '\n',
-        ) + '\n\n'),
+        (acc, item) =>
+          (acc +=
+            joinStr(
+              `${format(fromUnixTime(item.dt), 'dd/MM, H')}h:`,
+              `Avg. temp: ${item.main.temp > 0 ? `+${item.main.temp}` : item.main.temp}°C`,
+              `Cloudiness: ${item.clouds.all}%`,
+              `Wind: ~${item.wind.speed}m/s (up to ${item.wind.gust}m/s)`,
+              `Pressure: ${((item.main.pressure * 760) / 1013.25).toFixed(0)}mm Hg`,
+              '\n',
+            ) + '\n\n'),
         `Here's a weather forecast for ${this.days > 1 ? `${this.days} days` : 'a day'} forward in ${this.city}:\n\n`,
       )
       .trim();

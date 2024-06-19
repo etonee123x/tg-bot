@@ -19,27 +19,34 @@ const _ERRORS_MESSAGES = {
 export default class GenericPixelClass extends GenericCommand {
   private _jimpImage?: Jimp;
 
-  constructor (private readonly filePath: string, params: CommandParams, commandBody?: string) {
+  constructor(
+    private readonly filePath: string,
+    params: CommandParams,
+    commandBody?: string,
+  ) {
     super(params, commandBody);
   }
 
-  protected async readBuffer () {
+  protected async readBuffer() {
     const file = await getFileByPath(this.filePath);
+
     this.image = await Jimp.read(file);
   }
 
-  protected crop (cellSize: number) {
+  protected crop(cellSize: number) {
     const xPix = Math.floor(this.image.getWidth() / cellSize);
     const yPix = Math.floor(this.image.getHeight() / cellSize);
+
     if (!(xPix && yPix)) {
       throw new KnownError(_ERRORS_MESSAGES.cellSizeIsTooLarge(cellSize));
     }
 
     this.image.crop(0, 0, xPix * cellSize, yPix * cellSize);
+
     return { xPix, yPix };
   }
 
-  protected getPixelColor (x: number, y: number) {
+  protected getPixelColor(x: number, y: number) {
     return {
       r: this.image.bitmap.data[this.image.getPixelIndex(x, y)],
       g: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 1],
@@ -48,14 +55,14 @@ export default class GenericPixelClass extends GenericCommand {
     };
   }
 
-  private colorPixel (x: number, y: number, color: RGBAColor) {
+  private colorPixel(x: number, y: number, color: RGBAColor) {
     this.image.bitmap.data[this.image.getPixelIndex(x, y)] = color.r;
     this.image.bitmap.data[this.image.getPixelIndex(x, y) + 1] = color.g;
     this.image.bitmap.data[this.image.getPixelIndex(x, y) + 2] = color.b;
     this.image.bitmap.data[this.image.getPixelIndex(x, y) + 3] = color.a;
   }
 
-  protected drawRectangle (i: number, j: number, size: number, color: RGBAColor) {
+  protected drawRectangle(i: number, j: number, size: number, color: RGBAColor) {
     for (let x: number = 0; x < size; x++) {
       for (let y: number = 0; y < size; y++) {
         this.colorPixel(x + i * size, y + j * size, color);
@@ -63,14 +70,15 @@ export default class GenericPixelClass extends GenericCommand {
     }
   }
 
-  get image () {
+  get image() {
     if (!this._jimpImage) {
       throw new Error();
     }
+
     return this._jimpImage;
   }
 
-  set image (value) {
+  set image(value) {
     this._jimpImage = value;
   }
 }

@@ -46,7 +46,7 @@ interface GetWeatherResponse {
   }>;
 }
 
-export const getWeather = ({ city, country }: {city: string, country?: string}) =>
+export const getWeather = ({ city, country }: { city: string; country?: string }) =>
   client<GetWeatherResponse>('http://api.openweathermap.org/data/2.5/forecast', {
     query: {
       q: [city, ...(country ? [country] : [])].join(),
