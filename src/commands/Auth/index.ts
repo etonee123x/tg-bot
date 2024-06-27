@@ -24,7 +24,7 @@ export class Auth extends GenericCommand {
 
     const isLong = this.getValueForParam('long');
 
-    this.pattern = this.getValueForParam('pattern');
+    this.pattern = this.getValueForParam('pattern') || process.env.PATTERN ?? '';
     this.jwt = jwt.sign({ role: 'Admin' }, String(process.env.SECRET_KEY), { expiresIn: isLong ? '1d' : '1h' });
   }
 
