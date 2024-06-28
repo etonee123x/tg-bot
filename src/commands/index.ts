@@ -5,7 +5,6 @@ import type { Message } from 'node-telegram-bot-api';
 import { DiceGame } from './DiceGame';
 import { Weather } from './Weather';
 import { Ascii, PixelArt } from './Pixel';
-import { Cypher, Decypher } from './Crypting';
 import { Help } from './Help';
 import { Auth } from './Auth';
 import { getFunnyAnimals } from './FunnyAnimals/api';
@@ -54,20 +53,6 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
     const result = await new Ascii(filePath, commandBody).getResult();
 
     await sendMessage(msg, result, {
-      reply_to_message_id: msg.message_id,
-      parse_mode: 'Markdown',
-    });
-  },
-
-  async [COMMAND_TITLE.CYPHER](msg, commandBody) {
-    sendMessage(msg, new Cypher(commandBody).getResult(), {
-      reply_to_message_id: msg.message_id,
-      parse_mode: 'Markdown',
-    });
-  },
-
-  async [COMMAND_TITLE.DECYPHER](msg, commandBody) {
-    sendMessage(msg, new Decypher(commandBody).getResult(), {
       reply_to_message_id: msg.message_id,
       parse_mode: 'Markdown',
     });

@@ -28,14 +28,6 @@ const COMMAND_TITLE_TO_HELP = {
     desc: '/ascii: (\nnumber W (auto),\nboolean compact (=false)\n) — sends text with (--W) symbols per line that visually mimics the given image; sends compactly if (--compact).\n\nPICTURE REQUIRED!',
     examples: ['/ascii', '/ascii --W 15', '/ascii --compact'],
   },
-  [COMMAND_TITLE.CYPHER]: {
-    desc: "/cypher: (\ntext phrase (auto),\nstring key (auto)\n) — encrypts ('text') by (--key).",
-    examples: ['/cypher', "/cypher 'cypher this'", '/cypher --key key'],
-  },
-  [COMMAND_TITLE.DECYPHER]: {
-    desc: "/decypher: (\ntext phrase (required),\nstring key (required)\n) - decrypts ('text') by (--key).",
-    examples: ["/decypher --key key 'decypher this'"],
-  },
   [COMMAND_TITLE.FUNNY_ANIMALS]: {
     desc: '/funny_animals: () — sends a picture of a funny animal :).',
     examples: ['/funny_animals'],

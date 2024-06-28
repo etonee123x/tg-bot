@@ -1,6 +1,4 @@
 import Jimp from 'jimp';
-import { GenericCommand } from '@/commands/GenericCommand';
-import type { CommandParams } from '@/types';
 import { getFileByPath } from '@/api';
 import { createErrorClient } from '@shared/src/types';
 
@@ -16,16 +14,10 @@ const ERRORS_MESSAGES = {
     `This image is too small to pixelizate it with x${cellSize} cell size, try to decrease (--size)`,
 };
 
-export class GenericPixelClass extends GenericCommand {
+export class GenericPixelClass {
   private _jimpImage?: Jimp;
 
-  constructor(
-    private readonly filePath: string,
-    params: CommandParams,
-    commandBody?: string,
-  ) {
-    super(params, commandBody);
-  }
+  constructor(private readonly filePath: string) {}
 
   protected async readBuffer() {
     const file = await getFileByPath(this.filePath);

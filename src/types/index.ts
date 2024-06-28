@@ -18,8 +18,6 @@ export enum COMMAND_TITLE {
   WEATHER = 'weather',
   PIXEL = 'pixel',
   ASCII = 'ascii',
-  CYPHER = 'cypher',
-  DECYPHER = 'decypher',
   HAPPY_NORMING = 'happy_norming',
   FUNNY_ANIMALS = 'funny_animals',
   HELP = 'help',

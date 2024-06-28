@@ -1,22 +1,14 @@
 import { MIME_JPEG } from 'jimp';
 import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
 
-import type { CommandParams } from '@/types';
-
-const params: CommandParams = {
-  size: {
-    title: 'size',
-    type: 'number',
-    default: 10,
-  },
-};
+import { ParameterNumber } from '@/helpers/Parameter';
 
 export class PixelArt extends GenericPixelClass {
   private readonly cellSize: number;
 
-  constructor(filePath: string, commandBody?: string) {
-    super(filePath, params, commandBody);
-    this.cellSize = this.getValueForParam('size');
+  constructor(filePath: string, commandBody: string) {
+    super(filePath);
+    this.cellSize = new ParameterNumber('size').getValue(commandBody, 10);
   }
 
   public async getResult() {

@@ -1,31 +1,16 @@
 import jwt from 'jsonwebtoken';
-import { GenericCommand } from '@/commands/GenericCommand';
-import { CommandParams } from '@/types';
+import { ParameterBoolean, ParameterString } from '@/helpers/Parameter';
 
-const params: CommandParams = {
-  long: {
-    title: 'long',
-    type: 'boolean',
-    default: false,
-  },
-  pattern: {
-    title: 'pattern',
-    type: 'string',
-    default: '',
-  },
-};
+export class Auth {
+  private readonly jwt;
+  private readonly pattern;
 
-export class Auth extends GenericCommand {
-  private readonly jwt: string;
-  private readonly pattern: string;
+  constructor(commandBody: string) {
+    this.pattern = new ParameterString('pattern').getValue(commandBody, process.env.PATTERN ?? '');
 
-  constructor(commandBody?: string) {
-    super(params, commandBody);
-
-    const isLong = this.getValueForParam('long');
-
-    this.pattern = (this.getValueForParam('pattern') || process.env.PATTERN) ?? '';
-    this.jwt = jwt.sign({ role: 'Admin' }, String(process.env.SECRET_KEY), { expiresIn: isLong ? '1d' : '1h' });
+    this.jwt = jwt.sign({ role: 'Admin' }, String(process.env.SECRET_KEY), {
+      expiresIn: new ParameterBoolean('long').getValue(commandBody) ? '1d' : '1h',
+    });
   }
 
   public getResult() {

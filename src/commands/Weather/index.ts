@@ -1,70 +1,51 @@
 import { fromUnixTime, format } from 'date-fns';
-import { GenericCommand } from '@/commands/GenericCommand';
 
-import type { CommandParams } from '@/types';
 import { getWeather } from './api';
 import { createErrorClient } from '@shared/src/types';
-
-const params: CommandParams = {
-  city: {
-    title: 'city',
-    type: 'string',
-    required: true,
-  },
-  country: {
-    title: 'country',
-    type: 'string',
-    default: null,
-  },
-  days: {
-    title: 'days',
-    type: 'number',
-    default: 1,
-  },
-};
+import { ParameterNumber, ParameterString } from '@/helpers/Parameter';
 
 const ERRORS_MESSAGES = {
   moreThan5Days: () => "Can't get the weather data for more than 5 days, decrease (--days)",
   lessThan1Day: () => "Can't get the weather data for less than 1 day, increase (--days)",
 };
 
-export class Weather extends GenericCommand {
-  // @TODO: add languages
-  private readonly country: string;
-  private readonly city: string;
-  private readonly days: number;
+export class Weather {
+  // TODO: add languages
+  private readonly country;
+  private readonly city;
+  private readonly days;
 
-  constructor(commandBody?: string) {
-    super(params, commandBody);
-
-    this.days = this.getValueForParam('days');
-    if (this.days > 5 || this.days < 1) {
-      throw this.days > 5
-        ? createErrorClient(ERRORS_MESSAGES.moreThan5Days())
-        : createErrorClient(ERRORS_MESSAGES.lessThan1Day());
+  constructor(commandBody: string) {
+    this.days = new ParameterNumber('days').getValue(commandBody, 1);
+    if (this.days > 5) {
+      throw createErrorClient(ERRORS_MESSAGES.moreThan5Days());
     }
 
-    this.city = this.getValueForParam('city');
-    this.country = this.getValueForParam('country');
+    if (this.days < 1) {
+      throw createErrorClient(ERRORS_MESSAGES.lessThan1Day());
+    }
+
+    this.city = new ParameterString('city').getValue(commandBody);
+    this.country = new ParameterString('country').getValue(commandBody, '') || undefined;
   }
 
   public async getResult() {
-    const weather = await getWeather({ city: this.city, country: this.country });
-
-    return weather.list
-      .slice(0, this.days * 8)
-      .reduce(
-        (acc, item) =>
-          (acc +=
-            [
-              `${format(fromUnixTime(item.dt), 'dd/MM, H')}h:`,
-              `Avg. temp: ${item.main.temp > 0 ? `+${item.main.temp}` : item.main.temp}°C`,
-              `Cloudiness: ${item.clouds.all}%`,
-              `Wind: ~${item.wind.speed}m/s (up to ${item.wind.gust}m/s)`,
-              `Pressure: ${((item.main.pressure * 760) / 1013.25).toFixed(0)}mm Hg`,
-            ].join('\n') + '\n\n'),
-        `Here's a weather forecast for ${this.days > 1 ? `${this.days} days` : 'a day'} forward in ${this.city}:\n\n`,
-      )
-      .trim();
+    return getWeather({ city: this.city, country: this.country }).then((response) =>
+      response.list
+        .slice(0, this.days * 8)
+        .reduce(
+          (acc, item) =>
+            (acc +=
+              [
+                `${format(fromUnixTime(item.dt), 'dd/MM, H')}h:`,
+                `Avg. temp: ${item.main.temp > 0 ? `+${item.main.temp}` : item.main.temp}°C`,
+                `Cloudiness: ${item.clouds.all}%`,
+                `Wind: ~${item.wind.speed}m/s (up to ${item.wind.gust}m/s)`,
+                `Pressure: ${((item.main.pressure * 760) / 1013.25).toFixed(0)}mm Hg`,
+              ].join('\n') + '\n\n'),
+          `Here's a weather forecast for ${this.days > 1 ? `${this.days} days` : 'a day'} forward in ${this.city}:\n\n`,
+        )
+        .trim(),
+    );
   }
 }

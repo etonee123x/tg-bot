@@ -1,19 +1,7 @@
 import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
+import { ParameterBoolean, ParameterNumber } from '@/helpers/Parameter';
 
-import type { CommandParams } from '@/types';
 import { createErrorClient } from '@shared/src/types';
-
-const params: CommandParams = {
-  W: {
-    title: 'W',
-    type: 'number',
-  },
-  compact: {
-    title: 'compact',
-    type: 'boolean',
-    default: false,
-  },
-};
 
 const ERRORS_MESSAGES = {
   tooLargeSize: (isCompact: boolean) =>
@@ -24,14 +12,16 @@ const ERRORS_MESSAGES = {
 };
 
 export class Ascii extends GenericPixelClass {
-  private width: number;
-  private readonly isCompact: boolean;
-  private readonly palette = ' .,:;i1tfLCG08@'.split('');
+  private static readonly PALETTE = ' .,:;i1tfLCG08@'.split('');
 
-  constructor(filePath: string, commandBody?: string) {
-    super(filePath, params, commandBody);
-    this.isCompact = this.getValueForParam('compact');
-    this.width = this.getValueForParam('W');
+  private readonly width;
+  private readonly isCompact;
+
+  constructor(filePath: string, commandBody: string) {
+    super(filePath);
+
+    this.isCompact = new ParameterBoolean('compact').getValue(commandBody);
+    this.width = new ParameterNumber('w').getValue(commandBody, 0) || undefined;
   }
 
   public async getResult() {
@@ -66,7 +56,7 @@ export class Ascii extends GenericPixelClass {
 
     await this.readBuffer();
 
-    let xPix = (this.width = this.width ?? getLastWidthBeforeResultLengthWillBecomeMoreThan4000());
+    let xPix = this.width ?? getLastWidthBeforeResultLengthWillBecomeMoreThan4000();
     const cellSize = Math.floor(this.image.getWidth() / xPix);
     let yPix = Math.floor(this.image.getHeight() / cellSize);
 
@@ -101,7 +91,7 @@ export class Ascii extends GenericPixelClass {
       for (let j = 0; j < grayTable[i].length; j++) {
         result +=
           (this.isCompact || j === 0 ? '' : ' ') +
-          this.palette[Math.floor((grayTable[i][j] * (this.palette.length - 1)) / Number(maxBrightness))];
+          Ascii.PALETTE[Math.floor((grayTable[i][j] * (Ascii.PALETTE.length - 1)) / Number(maxBrightness))];
       }
 
       result += '\n';

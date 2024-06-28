@@ -1,20 +1,6 @@
-import { GenericCommand } from '@/commands/GenericCommand';
+import { ParameterNumber } from '@/helpers/Parameter';
 
-import type { CommandParams } from '@/types';
 import { createErrorClient } from '@shared/src/types';
-
-const params: CommandParams = {
-  n: {
-    title: 'n',
-    type: 'number',
-    default: 1,
-  },
-  d: {
-    title: 'd',
-    type: 'number',
-    default: 6,
-  },
-};
 
 const ERRORS_MESSAGES = {
   wrongDicesNumber: (dicesNumber: number) => `You cant throw ${dicesNumber} dices, increase --n`,
@@ -22,21 +8,19 @@ const ERRORS_MESSAGES = {
     `There are no dices with ${dimensionsNumber} dimensions, increase --d`,
 };
 
-export class DiceGame extends GenericCommand {
+export class DiceGame {
   private readonly dicesNumber: number;
   private readonly dimensionsNumber: number;
   private readonly results: number[] = [];
   private readonly sum: number = 0;
 
-  constructor(commandBody?: string) {
-    super(params, commandBody);
-
-    this.dicesNumber = this.getValueForParam('n');
+  constructor(commandBody: string) {
+    this.dicesNumber = new ParameterNumber('n').getValue(commandBody, 1);
     if (this.dicesNumber < 1) {
       throw createErrorClient(ERRORS_MESSAGES.wrongDicesNumber(this.dicesNumber));
     }
 
-    this.dimensionsNumber = this.getValueForParam('d');
+    this.dimensionsNumber = new ParameterNumber('d').getValue(commandBody, 6);
     if (this.dimensionsNumber < 2) {
       throw createErrorClient(ERRORS_MESSAGES.wrongDimensionsNumber(this.dimensionsNumber));
     }
