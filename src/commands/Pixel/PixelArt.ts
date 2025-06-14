@@ -1,4 +1,3 @@
-import { MIME_JPEG } from 'jimp';
 import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
 
 import { ParameterNumber } from '@/helpers/Parameter';
@@ -29,7 +28,7 @@ export class PixelArt extends GenericPixelClass {
 
     return {
       caption: `The image with pixels x${this.cellSize} larger than usual`,
-      bufferedImage: await this.image.getBufferAsync(MIME_JPEG),
+      bufferedImage: await this.image.getBuffer('image/jpeg'),
     };
   }
 }

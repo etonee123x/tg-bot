@@ -1,8 +1,8 @@
 import { fromUnixTime, format } from 'date-fns';
 
 import { getWeather } from './api';
-import { createErrorClient } from '@shared/src/types';
 import { ParameterNumber, ParameterString } from '@/helpers/Parameter';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
 
 const ERRORS_MESSAGES = {
   moreThan5Days: () => "Can't get the weather data for more than 5 days, decrease (--days)",

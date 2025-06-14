@@ -1,6 +1,6 @@
 import { GENERAL_MESSAGE } from '@/constants/generalMessage';
 import { COMMAND_TITLE, isCommandTitle } from '@/types';
-import { createErrorClient } from '@shared/src/types';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
 
 const ERRORS_MESSAGES = {
   commandNotFound: (commandTitle: string) => `Command '${commandTitle}' not found, send /help to see commands list`,

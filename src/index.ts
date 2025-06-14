@@ -10,7 +10,7 @@ import { cutMessage } from '@/utils/cutMessage';
 import { dateLog } from '@/utils/dateLog';
 
 import { GENERAL_MESSAGE } from '@/constants/generalMessage';
-import { type CustomError, isCustomError } from '@shared/src/types';
+import { type CustomError, isCustomError } from '@etonee123x/shared/helpers/error';
 
 bot.on('message', async (message) => {
   const maybeMessageContent = message.text ?? message.caption;
@@ -31,9 +31,11 @@ bot.on('message', async (message) => {
   const commandTitle = String(maybeMessageContent.match(/(?<=\/)[^\s]+/)?.[0]);
 
   try {
-    isCommandTitle(commandTitle)
-      ? await commands[commandTitle](message, commandBody)
-      : await sendMessage(message, GENERAL_MESSAGE);
+    if (isCommandTitle(commandTitle)) {
+      await commands[commandTitle](message, commandBody);
+    } else {
+      await sendMessage(message, GENERAL_MESSAGE);
+    }
   } catch (e) {
     const onCustomError = (error: CustomError) => sendMessage(message, ['Error:', error.data].join(' '));
 

@@ -1,4 +1,4 @@
-import { isString } from '@shared/src/utils';
+import { isString } from '@etonee123x/shared/utils/isString';
 
 export interface CommandParamOptions {
   title: string;

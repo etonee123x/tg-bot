@@ -1,6 +1,5 @@
 import { ParameterNumber } from '@/helpers/Parameter';
-
-import { createErrorClient } from '@shared/src/types';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
 
 const ERRORS_MESSAGES = {
   wrongDicesNumber: (dicesNumber: number) => `You cant throw ${dicesNumber} dices, increase --n`,

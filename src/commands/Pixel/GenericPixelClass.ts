@@ -1,6 +1,7 @@
-import Jimp from 'jimp';
+import { Jimp } from 'jimp';
 import { getFileByPath } from '@/api';
-import { createErrorClient } from '@shared/src/types';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
+import { throwError } from '@etonee123x/shared/utils/throwError';
 
 interface RGBAColor {
   r: number;
@@ -15,7 +16,7 @@ const ERRORS_MESSAGES = {
 };
 
 export class GenericPixelClass {
-  private _jimpImage?: Jimp;
+  private _jimpImage?: Awaited<ReturnType<(typeof Jimp)['read']>>;
 
   constructor(private readonly filePath: string) {}
 
@@ -26,24 +27,29 @@ export class GenericPixelClass {
   }
 
   protected crop(cellSize: number) {
-    const xPix = Math.floor(this.image.getWidth() / cellSize);
-    const yPix = Math.floor(this.image.getHeight() / cellSize);
+    const xPix = Math.floor(this.image.width / cellSize);
+    const yPix = Math.floor(this.image.height / cellSize);
 
     if (!(xPix && yPix)) {
       throw createErrorClient(ERRORS_MESSAGES.cellSizeIsTooLarge(cellSize));
     }
 
-    this.image.crop(0, 0, xPix * cellSize, yPix * cellSize);
+    this.image.crop({
+      x: 0,
+      y: 0,
+      w: xPix * cellSize,
+      h: yPix * cellSize,
+    });
 
     return { xPix, yPix };
   }
 
   protected getPixelColor(x: number, y: number) {
     return {
-      r: this.image.bitmap.data[this.image.getPixelIndex(x, y)],
-      g: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 1],
-      b: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 2],
-      a: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 3],
+      r: this.image.bitmap.data[this.image.getPixelIndex(x, y)] ?? throwError(),
+      g: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 1] ?? throwError(),
+      b: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 2] ?? throwError(),
+      a: this.image.bitmap.data[this.image.getPixelIndex(x, y) + 3] ?? throwError(),
     };
   }
 

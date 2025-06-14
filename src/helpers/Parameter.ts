@@ -1,5 +1,6 @@
-import { createErrorClient } from '@shared/src/types';
-import { isNil, isString } from '@shared/src/utils';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
+import { isNil } from '@etonee123x/shared/utils/isNil';
+import { isString } from '@etonee123x/shared/utils/isString';
 
 type ParameterType = string | number | boolean;
 
@@ -15,9 +16,7 @@ const ERRORS_MESSAGES = {
 export class ParameterBoolean implements Parameter<boolean> {
   constructor(private title: string) {}
 
-  getValue: Parameter<boolean>['getValue'] = (commandBody) => {
-    return new RegExp(`--${this.title}`, 'gmi').test(commandBody);
-  };
+  getValue: Parameter<boolean>['getValue'] = (commandBody) => new RegExp(`--${this.title}`, 'gmi').test(commandBody);
 }
 
 export class ParameterString implements Parameter<string> {

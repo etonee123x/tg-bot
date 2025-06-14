@@ -1,7 +1,7 @@
 import { GenericPixelClass } from '@/commands/Pixel/GenericPixelClass';
 import { ParameterBoolean, ParameterNumber } from '@/helpers/Parameter';
-
-import { createErrorClient } from '@shared/src/types';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
+import { throwError } from '@etonee123x/shared/utils/throwError';
 
 const ERRORS_MESSAGES = {
   tooLargeSize: (isCompact: boolean) =>
@@ -41,11 +41,11 @@ export class Ascii extends GenericPixelClass {
 
       do {
         ++cellSize;
-        h = Math.floor(this.image.getHeight() / cellSize);
-        w = Math.floor(this.image.getWidth() / cellSize);
-      } while (isResultLengthMoreThan4000(w, h) && w <= this.image.getWidth() && h <= this.image.getHeight());
+        h = Math.floor(this.image.height / cellSize);
+        w = Math.floor(this.image.width / cellSize);
+      } while (isResultLengthMoreThan4000(w, h) && w <= this.image.width && h <= this.image.height);
 
-      return Math.min(w - 1, this.image.getWidth());
+      return Math.min(w - 1, this.image.width);
     };
 
     const getGray = (x: number, y: number) => {
@@ -57,8 +57,8 @@ export class Ascii extends GenericPixelClass {
     await this.readBuffer();
 
     let xPix = this.width ?? getLastWidthBeforeResultLengthWillBecomeMoreThan4000();
-    const cellSize = Math.floor(this.image.getWidth() / xPix);
-    let yPix = Math.floor(this.image.getHeight() / cellSize);
+    const cellSize = Math.floor(this.image.width / xPix);
+    let yPix = Math.floor(this.image.height / cellSize);
 
     if (isResultLengthMoreThan4000(xPix, yPix)) {
       throw createErrorClient(ERRORS_MESSAGES.tooLargeSize(this.isCompact));
@@ -81,17 +81,22 @@ export class Ascii extends GenericPixelClass {
         const gray = getGray(x, y);
 
         maxBrightness = Math.max(gray, maxBrightness);
-        grayTable[h].push(gray);
+        (grayTable[h] ?? throwError()).push(gray);
       }
     }
 
     let result = '```\n';
 
     for (let i = 0; i < grayTable.length; i++) {
-      for (let j = 0; j < grayTable[i].length; j++) {
+      for (let j = 0; j < (grayTable[i] ?? throwError()).length; j++) {
         result +=
           (this.isCompact || j === 0 ? '' : ' ') +
-          Ascii.PALETTE[Math.floor((grayTable[i][j] * (Ascii.PALETTE.length - 1)) / Number(maxBrightness))];
+          Ascii.PALETTE[
+            Math.floor(
+              (((grayTable[i] ?? throwError())[j] ?? throwError()) * (Ascii.PALETTE.length - 1)) /
+                Number(maxBrightness),
+            )
+          ];
       }
 
       result += '\n';

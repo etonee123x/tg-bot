@@ -13,7 +13,8 @@ import { getHappyNorming } from './HappyNorming/api';
 import { sendMessage } from '@/helpers/sendMessage';
 import { COMMAND_TITLE } from '@/types';
 import { GENERAL_MESSAGE } from '@/constants/generalMessage';
-import { createErrorClient } from '@shared/src/types';
+import { createErrorClient } from '@etonee123x/shared/helpers/error';
+import { throwError } from '@etonee123x/shared/utils/throwError';
 
 export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: string) => Promise<void>> = {
   async [COMMAND_TITLE.ECHO](msg, commandBody) {
@@ -35,7 +36,9 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
       throw createErrorClient(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
     }
 
-    const filePath = await bot.getFile(msg.photo[msg.photo.length - 1].file_id).then((p) => String(p.file_path));
+    const lastPhoto = msg.photo[msg.photo.length - 1] ?? throwError();
+
+    const filePath = await bot.getFile(lastPhoto.file_id).then((p) => String(p.file_path));
     const { bufferedImage, caption } = await new PixelArt(filePath, commandBody).getResult();
 
     await bot.sendPhoto(msg.chat.id, bufferedImage, {
@@ -49,7 +52,9 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
       throw createErrorClient(ERRORS_MESSAGES.NO_REQUIRED_PHOTO());
     }
 
-    const filePath = await bot.getFile(msg.photo[msg.photo.length - 1].file_id).then((p) => String(p.file_path));
+    const lastPhoto = msg.photo[msg.photo.length - 1] ?? throwError();
+
+    const filePath = await bot.getFile(lastPhoto.file_id).then((p) => String(p.file_path));
     const result = await new Ascii(filePath, commandBody).getResult();
 
     await sendMessage(msg, result, {
@@ -84,8 +89,12 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
   },
 
   async [COMMAND_TITLE.AUTH](msg, commandBody) {
-    msg.chat.id === Number(process.env.ADMIN_CHAT_ID)
-      ? await sendMessage(msg, new Auth(commandBody).getResult(), { parse_mode: 'HTML' })
-      : await sendMessage(msg, GENERAL_MESSAGE);
+    if (msg.chat.id === Number(process.env.ADMIN_CHAT_ID)) {
+      await sendMessage(msg, new Auth(commandBody).getResult(), { parse_mode: 'HTML' });
+
+      return;
+    }
+
+    await sendMessage(msg, GENERAL_MESSAGE);
   },
 };
