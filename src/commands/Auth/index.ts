@@ -8,7 +8,7 @@ export class Auth {
   constructor(commandBody: string) {
     this.pattern = new ParameterString('pattern').getValue(commandBody, process.env.PATTERN ?? '');
 
-    this.jwt = jwt.sign({ role: 'Admin' }, String(process.env.SECRET_KEY), {
+    this.jwt = jwt.sign({ isAdmin: true }, String(process.env.SECRET_KEY), {
       expiresIn: new ParameterBoolean('long').getValue(commandBody) ? '1d' : '1h',
     });
   }
