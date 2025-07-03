@@ -1,6 +1,6 @@
 import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import { ofetch } from 'ofetch';
-import { createErrorServer } from '@etonee123x/shared/';
+import { createErrorServer } from '@etonee123x/shared/helpers/error';
 
 export const client = ofetch.create({
   baseURL: String(process.env.API_URL),
