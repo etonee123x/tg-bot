@@ -14,6 +14,6 @@ export class Auth {
   }
 
   public getResult() {
-    return this.pattern ? this.pattern.replace('[token]', this.jwt) : `<code>${this.jwt}</code>`;
+    return this.pattern ? this.pattern.replace('[jwt]', this.jwt) : `<code>${this.jwt}</code>`;
   }
 }
