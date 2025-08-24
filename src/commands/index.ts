@@ -3,7 +3,6 @@ import { ERRORS_MESSAGES } from '@/constants/errorMessages';
 import type { Message } from 'node-telegram-bot-api';
 
 import { DiceGame } from './DiceGame';
-import { Weather } from './Weather';
 import { Ascii, PixelArt } from './Pixel';
 import { Help } from './Help';
 import { Auth } from './Auth';
@@ -23,12 +22,6 @@ export const commands: Record<COMMAND_TITLE, (message: Message, commandBody: str
 
   async [COMMAND_TITLE.ROLL](msg, commandBody) {
     await sendMessage(msg, new DiceGame(commandBody).getResult());
-  },
-
-  async [COMMAND_TITLE.WEATHER](msg, commandBody) {
-    const result = await new Weather(commandBody).getResult();
-
-    await sendMessage(msg, result);
   },
 
   async [COMMAND_TITLE.PIXEL](msg, commandBody) {

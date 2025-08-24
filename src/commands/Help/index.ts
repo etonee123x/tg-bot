@@ -16,10 +16,6 @@ const COMMAND_TITLE_TO_HELP = {
     desc: '/roll: (\nnumber N (=1),\nnumber D (=6)\n) — simulation of throwing (--N) dices with (--D) dimensions.',
     examples: ['/roll', '/roll --N 3', '/roll --D 20'],
   },
-  [COMMAND_TITLE.WEATHER]: {
-    desc: '/weather: (\nstring city (required),\nstring country (auto),\nnumber days (=1),\n) — sends data about the weather in the city (--city) of the country (--country) for (--days) further days.',
-    examples: ['/weather --city Moscow', '/weather --city Moscow --country ru', '/weather --city Moscow --days 5'],
-  },
   [COMMAND_TITLE.PIXEL]: {
     desc: '/pixel: (\nnumber size (=10)\n) — creates pixel art of the the input image with pixel size (--size) times larger than usual.\n\nPICTURE REQUIRED!',
     examples: ['/pixel', '/pixel --size 25'],

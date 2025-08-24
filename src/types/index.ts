@@ -15,7 +15,6 @@ export interface CommandParams {
 export enum COMMAND_TITLE {
   ECHO = 'echo',
   ROLL = 'roll',
-  WEATHER = 'weather',
   PIXEL = 'pixel',
   ASCII = 'ascii',
   HAPPY_NORMING = 'happy_norming',
