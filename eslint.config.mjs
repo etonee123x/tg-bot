@@ -5,37 +5,17 @@ import tseslint from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
-  {
-    name: 'ignores',
-    ignores: ['submodules/'],
-  },
-  {
-    name: 'js: recommended',
-    ...pluginJs.configs.recommended,
-  },
-  {
-    name: 'prettier: recommended',
-    ...eslintPluginPrettierRecommended,
-  },
+  pluginJs.configs.recommended,
+  eslintPluginPrettierRecommended,
   ...tseslint.configs.recommended,
   {
-    name: 'global languageOptions',
+    plugins: {
+      '@stylistic/js': stylistic,
+    },
     languageOptions: {
-      globals: globals.browser,
       parserOptions: {
         parser: '@typescript-eslint/parser',
       },
-    },
-  },
-  {
-    name: 'files pattern',
-    files: ['**/*.{js,mjs,cjs,ts,vue}'],
-  },
-  {
-    name: 'stylistic',
-    plugins: {
-      '@stylistic/js': stylistic,
-      '@stylistic/ts': stylistic,
     },
     rules: {
       '@stylistic/js/semi': ['error', 'always'],
@@ -65,18 +45,8 @@ export default [
           next: ['const', 'let', 'var'],
         },
       ],
-    },
-  },
-  {
-    name: 'typescript',
-    rules: {
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
-    },
-  },
-  {
-    name: 'global rules',
-    rules: {
       'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
       'no-unexpected-multiline': 'error',
       'no-var': 'error',
@@ -84,11 +54,6 @@ export default [
       curly: ['error', 'all'],
       'arrow-body-style': ['error', 'as-needed'],
       'no-sparse-arrays': ['off'],
-    },
-  },
-  {
-    name: 'prettier',
-    rules: {
       'prettier/prettier': [
         'error',
         {
@@ -98,5 +63,18 @@ export default [
         },
       ],
     },
+    files: ['{*,**/*}.{js,cjs,mjs,ts,vue}'],
+  },
+  {
+    languageOptions: {
+      globals: globals.browser,
+    },
+    files: ['{*,**/*}.{js,mjs,ts,vue}'],
+  },
+  {
+    languageOptions: {
+      globals: globals.node,
+    },
+    files: ['{*,**/*}.cjs'],
   },
 ];
