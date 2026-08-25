@@ -20,7 +20,6 @@
   "author": "etone123x",
   "license": "ISC",
   "dependencies": {
-    "@etonee123x/shared": "github:etonee123x/shared",
     "dotenv": "^17.4.2",
     "jsonwebtoken": "^9.0.3",
     "node-telegram-bot-api": "^1.1.0"
