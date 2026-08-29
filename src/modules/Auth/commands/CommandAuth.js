@@ -33,7 +33,7 @@ export class CommandAuth extends Command {
     bot.reply(
       message,
       this.#authPattern.replace('{jwt}', () =>
-        Jsonwebtoken.sign({ isAdmin: true }, this.#jwtSecretKey, { expiresIn: '30m' }),
+        Jsonwebtoken.sign({ isAdmin: true }, this.#jwtSecretKey, { expiresIn: '10m' }),
       ),
     );
   }
