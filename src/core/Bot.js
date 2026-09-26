@@ -22,8 +22,13 @@ export class Bot {
   /**
    * @param {Message} message
    * @param {string} text
+   * @param {{ link_preview_options?: { is_disabled?: boolean } }} [options={}]
    */
-  reply(message, text) {
-    this.#_.sendMessage(message.chatId, text, { reply_parameters: { message_id: message.id }, parse_mode: 'HTML' });
+  reply(message, text, options = {}) {
+    this.#_.sendMessage(message.chatId, text, {
+      reply_parameters: { message_id: message.id },
+      parse_mode: 'HTML',
+      ...options,
+    });
   }
 }

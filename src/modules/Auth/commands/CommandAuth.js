@@ -33,7 +33,9 @@ export class CommandAuth extends Command {
         .replaceAll('<', '&lt;')
         .replaceAll('>', '&gt;');
 
-      bot.reply(message, `<a href="${escapedUrl}">Открыть ссылку для входа</a>`);
+      bot.reply(message, `<a href="${escapedUrl}">Login</a>`, {
+        link_preview_options: { is_disabled: true },
+      });
     } catch (error) {
       console.error('Failed to create an authentication link:', error);
       bot.reply(message, 'Не удалось создать ссылку для входа. Попробуйте позже.');
